@@ -14,10 +14,12 @@ pipeline{
             steps{
                 install_nginx()
             }
+        }
+        stage("Service status"){
+            agent {label 'node2'}
             steps{
-               start_service()
+                start_service()
             }
         }
-       
     }
 }
