@@ -1,4 +1,3 @@
-#!/bin/bash
 
 install_nginx(){
     sudo apt install nginx -y || echo "Installation failed && exit 1"
