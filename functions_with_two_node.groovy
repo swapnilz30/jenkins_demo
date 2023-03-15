@@ -19,7 +19,7 @@ pipeline {
             }
         }
         stage("Env Node Name"){
-            agent {label 'node2'}
+            agent {label 'node1'}
             steps{
                 diplay_build_user(NODE_NAME)
             }    
