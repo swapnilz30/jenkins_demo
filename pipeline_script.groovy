@@ -26,5 +26,10 @@ pipeline{
                 echo "Current job name \${JOB_URL} -> ${JOB_URL}"
             }    
         }
+        stage("WORKSPACE"){
+            steps{
+                echo "Current job name \${WORKSPACE} -> ${WORKSPACE}"
+            }    
+        }
     }
 }
