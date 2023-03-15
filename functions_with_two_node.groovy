@@ -15,6 +15,7 @@ pipeline {
                 // wrap step, call from steps
                 wrap([$class: 'BuildUser']) {
                     diplay_build_user(BUILD_USER)
+                    display_node_name(NODE_NAME)
                 }    
             }
         }
@@ -22,6 +23,7 @@ pipeline {
             agent {label 'node1'}
             steps{
                 diplay_build_user(NODE_NAME)
+                display_node_name(NODE_NAME)
             }    
         }
     }
