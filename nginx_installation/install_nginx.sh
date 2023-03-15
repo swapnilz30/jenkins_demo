@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 check_nginx_installed(){
      sudo apt list --installed | grep nginx
