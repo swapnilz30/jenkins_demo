@@ -1,13 +1,6 @@
-def copy_installation_file(WORKSPACE){
-    echo "Copy file"
-    sh 'scp ${WORKSPACE}/nginx_installation/install_nginx.sh sample@192.168.1.42:~/.'
-}
-def change_permission(){
-    sh 'ssh sample@192.168.1.42 chmod +x install_nginx.sh'
-}
 def install_nginx(){
     echo "Installation started"
-    sh 'ssh sample@192.168.1.42 /home/sample/install_nginx.sh'
+    sh "ssh sample@192.168.1.42 'sudo apt install nginx -y || echo failed to installed && exit 1'"
 }
 
 pipeline{
