@@ -6,16 +6,6 @@ def install_nginx(){
 pipeline{
     agent {label 'jenkinsnodes'}
     stages{
-        stage("Copy Nginx Installation File"){
-            steps{
-                copy_installation_file(WORKSPACE)
-            }    
-        }
-        stage("Change Persmission"){
-            steps{
-                change_permission()
-            }
-        }
         stage("Install Jenkins"){
             agent {label 'node2'}
             steps{
