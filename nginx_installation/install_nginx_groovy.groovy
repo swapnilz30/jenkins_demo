@@ -1,13 +1,13 @@
-def copy_installation_file(){
+def copy_installation_file(WORKSPACE){
     echo "Copy file"
-    sh 'scp /home/jenkins/install_nginx.sh sample@192.168.1.42:~/.'
+    sh 'scp ${WORKSPACE}/nginx_installation/install_nginx.sh sample@192.168.1.42:~/.'
 }
 def change_permission(){
     sh 'ssh sample@192.168.1.42 chmod +x install_nginx.sh'
 }
 def install_nginx(){
     echo "Installation started"
-    sh 'ssh sample@192.168.1.42 /home/sample/install_nginx.sh'
+    sh 'ssh sample@192.168.1.42 sh /home/sample/install_nginx.sh'
 }
 
 pipeline{
@@ -15,7 +15,7 @@ pipeline{
     stages{
         stage("Copy Nginx Installation File"){
             steps{
-                copy_installation_file()
+                copy_installation_file(WORKSPACE)
             }    
         }
         stage("Change Persmission"){
