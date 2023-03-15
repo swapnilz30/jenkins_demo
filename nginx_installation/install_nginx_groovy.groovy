@@ -7,7 +7,7 @@ def change_permission(){
 }
 def install_nginx(){
     echo "Installation started"
-    sh 'ssh sample@192.168.1.42 sh /home/sample/install_nginx.sh'
+    sh 'ssh sample@192.168.1.42 bash /home/sample/install_nginx.sh'
 }
 
 pipeline{
