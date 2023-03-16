@@ -1,6 +1,4 @@
-def diplay_build_user(name) {
-    echo "Build username: ${name}"
-}
+@Library('shared_library_example')
 
 pipeline {
     agent {label 'jenkinsnodes'}
@@ -10,7 +8,7 @@ pipeline {
             steps{
                // wrap step, call from steps
                 wrap([$class: 'BuildUser']) {
-                    diplay_build_user(BUILD_USER)
+                    libraryfunction(BUILD_USER, NODE_NAME)
                 }
             }    
         }
