@@ -1,5 +1,5 @@
 pipeline{
-    agent {label 'jenkinsnodes'}
+    agent any;
     stages{
         stage("Env Build Number"){
             steps{
@@ -30,6 +30,22 @@ pipeline{
             steps{
                 echo "Current job name \${WORKSPACE} -> ${WORKSPACE}"
             }    
+        }
+        stage("Sleep"){
+            steps{
+                sh '''sleep 20'''
+            }
+        }
+        
+    }
+    post {
+        aborted {
+            script{
+              echo "Damn it. I was aborted!"
+            }
+        }
+        always{
+            echo "Always method"
         }
     }
 }
