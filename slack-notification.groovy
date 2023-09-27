@@ -1,0 +1,42 @@
+pipeline{
+    agent any;
+    stages{
+        stage("Env Build Number"){
+            steps{
+                echo "Current build number \${BUILD_NUMBER} -> ${BUILD_NUMBER}"
+            }
+        }
+        stage("Env Job Name"){
+            steps{
+                echo "Current job name \${JOB_NAME} -> ${JOB_NAME}"
+            }
+        }
+    }
+    post {
+        aborted {
+            script{
+              echo "Damn it. I was aborted!"
+            }
+        }
+        always {
+            // Send a Slack notification for success or failure
+           /* script {
+                def slackToken = credentials('slack-api-token')
+                slackSend (
+                    color: currentBuild.result == 'SUCCESS' ? 'good' : 'danger',
+                    message: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) has finished with status: ${currentBuild.result}.",
+                    tokenCredentialId: slackToken,
+                    channel: '#your_slack_channel' // Replace this with your desired Slack channel or user ID
+                )
+            }*/
+            withCredentials([string(credentialsId: 'slack-api-token', variable: 'SLACK_TOKEN')]) {
+                slackSend (
+                    color: currentBuild.result == 'SUCCESS' ? 'good' : 'danger',
+                    message: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) has finished with status: ${currentBuild.result} ${JOB_URL}/${env.BUILD_NUMBER}/console.",
+                    tokenCredentialId: 'slack-api-token',
+                    channel: '#general' // Replace with the actual channel name
+                )
+            }
+        }
+    }
+}
