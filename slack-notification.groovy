@@ -29,6 +29,10 @@ pipeline{
                     channel: '#your_slack_channel' // Replace this with your desired Slack channel or user ID
                 )
             }*/
+            //add slack plugin in Jenkins
+            //add Jenkins app in slack and you will get token. Also add parameter as per requirement in slack.
+            //add slack-generated token to Jenkins as secret text and name it as "slack-api-token"
+            
             withCredentials([string(credentialsId: 'slack-api-token', variable: 'SLACK_TOKEN')]) {
                 slackSend (
                     color: currentBuild.result == 'SUCCESS' ? 'good' : 'danger',
