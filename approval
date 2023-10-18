@@ -1,16 +1,62 @@
-stage('Approval to Deploy to UAT') {
-                steps {
-                  script {
+pipeline{
+    agent any;
+    stages{
+        stage("Env Build Number"){
+            steps{
+                echo "Current build number \${BUILD_NUMBER} -> ${BUILD_NUMBER}"
+            }
+        }
+        stage("Env Job Name"){
+            steps{
+                echo "Current job name \${JOB_NAME} -> ${JOB_NAME}"
+            }
+        }
+        stage('Approval for testing') {
+            steps {
+                script {
                     continueStages = true
-                  }
-                  timeout(time: 5, unit: "MINUTES") {
+                }
+                timeout(time: 5, unit: "MINUTES") {
                     input (
-                      message: 'Do you want to approve the deployment to UAT?', 
+                      message: 'Do you want to approve testing?', 
                       ok: 'Yes', 
-                      submitter: 'berniceh,scottl', 
+                      submitter: 'swapnil,jenkins,swapnilz', 
                       submitterParameter: 'approver'
                     )
-                  }
-                  echo "Initiating UAT deployment"
                 }
-              } 
+                echo "Approved testing."
+            }
+        } 
+    }
+    post {
+        aborted {
+            script{
+              echo "Damn it. I was aborted!"
+            }
+        }
+        always {
+            // Send a Slack notification for success or failure
+           /* script {
+                def slackToken = credentials('slack-api-token')
+                slackSend (
+                    color: currentBuild.result == 'SUCCESS' ? 'good' : 'danger',
+                    message: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) has finished with status: ${currentBuild.result}.",
+                    tokenCredentialId: slackToken,
+                    channel: '#your_slack_channel' // Replace this with your desired Slack channel or user ID
+                )
+            }*/
+            //add slack plugin in Jenkins
+            //add Jenkins app in slack and you will get token. Also add parameter as per requirement in slack.
+            //add slack-generated token to Jenkins as secret text and name it as "slack-api-token"
+            
+            withCredentials([string(credentialsId: 'slack-api-token', variable: 'SLACK_TOKEN')]) {
+                slackSend (
+                    color: currentBuild.result == 'SUCCESS' ? 'good' : 'danger',
+                    message: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) has finished with status: ${currentBuild.result} ${JOB_URL}/${env.BUILD_NUMBER}/console.",
+                    tokenCredentialId: 'slack-api-token',
+                    channel: '#general' // Replace with the actual channel name
+                )
+            }
+        }
+    }
+}
