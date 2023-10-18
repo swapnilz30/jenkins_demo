@@ -1,0 +1,16 @@
+stage('Approval to Deploy to UAT') {
+                steps {
+                  script {
+                    continueStages = true
+                  }
+                  timeout(time: 5, unit: "MINUTES") {
+                    input (
+                      message: 'Do you want to approve the deployment to UAT?', 
+                      ok: 'Yes', 
+                      submitter: 'berniceh,scottl', 
+                      submitterParameter: 'approver'
+                    )
+                  }
+                  echo "Initiating UAT deployment"
+                }
+              } 
