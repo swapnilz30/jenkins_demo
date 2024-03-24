@@ -26,4 +26,15 @@ pipeline {
             }
         }
     }
+    post {
+        success {
+            echo 'This will run if all stages are successful.'
+        }
+        failure {
+            echo 'This will run if any stage fails.'
+        }
+        always {
+            echo 'This will always run, regardless of success or failure.'
+        }
+    }
 }
