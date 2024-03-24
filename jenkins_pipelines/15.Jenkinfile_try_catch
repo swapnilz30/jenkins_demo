@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+    stages {
+        stage('Try Catch Example') {
+            steps {
+                script {
+                    try {
+                        // Simulating an error
+                        if(!params.ITEMS.trim().isEmpty()){
+                            def items = params.ITEMS.tokenize(',')
+                            for (item in items) {
+                                echo "Processing ${item}"
+                            }
+                        }
+                        else{
+                            //error "ITEMS cannot be empty."
+                            // Exit if ITEMS empty and it will go to catch block
+                            sh 'exit 1'
+                        }
+                    } catch (Exception e) {
+                        echo "Caught an error: ${e.getMessage()}"
+                        // Inform Jenkins that build is failed.
+                        sh 'exit 1'
+                    }
+                }
+            }
+        }
+    }
+}

@@ -24,8 +24,10 @@ pipeline {
                             break
                         }
                         else{
-                            echo "You have entered wrong option"
-                            break
+                            // Raise error if ITEMS is empty.
+                            error "ITEMS cannot be empty."
+                            // Exit to inform Jenkins that build is failed.
+                            exit 1
                         }
                     }
                 }

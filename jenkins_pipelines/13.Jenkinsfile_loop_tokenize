@@ -1,0 +1,19 @@
+pipeline {
+    agent any
+    parameters {
+        string(name: 'ITEMS', defaultValue: 'item1,item2,item3', description: 'Comma-separated items')
+    }
+    stages {
+        stage('Advanced Loop Example') {
+            steps {
+                script {
+                    // tokenize remove ','
+                    def items = params.ITEMS.tokenize(',')
+                    for (item in items) {
+                        echo "Processing ${item}"
+                    }
+                }
+            }
+        }
+    }
+}

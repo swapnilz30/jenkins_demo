@@ -1,0 +1,14 @@
+pipeline {
+    agent any
+    stages {
+        stage('Each Loop Example') {
+            steps {
+                script {
+                    ['item1', 'item2', 'item3'].each { item ->
+                        echo "Processing ${item}"
+                    }
+                }
+            }
+        }
+    }
+}
