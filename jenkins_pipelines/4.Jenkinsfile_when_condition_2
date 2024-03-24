@@ -1,0 +1,27 @@
+pipeline {
+    agent any // Specify the agent where the pipeline will run. It's missing in the original snippet.
+    parameters {
+        string(name: 'ENVIRONMENT', defaultValue: 'staging', description: 'What is ENVIRONMENT?')
+    }
+    stages { // The 'stages' block is required to wrap one or more 'stage' blocks.
+        stage('Integration Test') {
+            when {
+                environment name: 'ENVIRONMENT', value: 'staging'
+            }
+            steps {
+                echo 'Running integration tests...'
+            }
+        }
+    }
+    post {
+        success {
+            echo 'This will run if all stages are successful.'
+        }
+        failure {
+            echo 'This will run if any stage fails.'
+        }
+        always {
+            echo 'This will always run, regardless of success or failure.'
+        }
+    }
+}

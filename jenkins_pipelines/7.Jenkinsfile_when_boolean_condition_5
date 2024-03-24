@@ -1,0 +1,16 @@
+pipeline {
+    agent any
+    parameters {
+        booleanParam(name: 'run_tests', defaultValue: true, description: 'Should we run tests?')
+    }
+    stages {
+        stage('Run Tests') {
+            when {
+                expression { params.run_tests }
+            }
+            steps {
+                echo 'Running tests...'
+            }
+        }
+    }
+}

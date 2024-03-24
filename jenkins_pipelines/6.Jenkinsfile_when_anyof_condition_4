@@ -1,0 +1,22 @@
+pipeline {
+    agent any
+    environment {
+        // The following code added for string parameter using \
+        // "This project is parameterised" method
+        // If user enter other than main and develop branch then pre-prelease checks skips.
+        DEPLOY_ENV = "${params.branch_name}"
+    }
+    stages {
+        stage('Pre-Release Checks') {
+            when {
+                anyOf {
+                    branch 'main'
+                    branch 'develop'
+                }
+            }
+            steps {
+                echo 'Running pre-release checks...'
+            }
+        }
+    }
+}

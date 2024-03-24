@@ -1,0 +1,19 @@
+pipeline {
+    agent any
+    environment {
+        // DEPLOY_ENV = 'production'
+        // The following code added for string parameter using \
+        // "This project is parameterised" method
+        DEPLOY_ENV = "${params.env_name}"
+    }
+    stages {
+        stage('Deploy') {
+            when {
+                environment name: 'DEPLOY_ENV', value: 'production'
+            }
+            steps {
+                echo 'Deploying to production environment...'
+            }
+        }
+    }
+}
