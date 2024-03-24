@@ -1,0 +1,24 @@
+pipeline {
+    agent any
+    parameters {
+        // Assuming Active Choices Parameter is defined elsewhere in Jenkins configuration
+        // Just referencing the parameter here by name
+        choice(name: 'languages', choices: ['Option 1', 'Option 2', 'Option 3'], description: 'Select Language Option')
+    }
+    stages {
+        stage('Decision Based on Selection') {
+            steps {
+                script {
+                    // Directly using params.languages to make decisions
+                    if(params.languages == 'Option 1'){
+                        echo "Option 1 Selected: Performing action for Option 1"
+                    } else if(params.languages == 'Option 2') {
+                        echo "Option 2 Selected: Performing action for Option 2"
+                    } else if(params.languages == 'Option 3') {
+                        echo "Option 3 Selected: Performing action for Option 3"
+                    }
+                }
+            }
+        }
+    }
+}

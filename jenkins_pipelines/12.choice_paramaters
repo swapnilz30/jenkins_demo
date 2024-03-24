@@ -1,0 +1,12 @@
+pipeline {
+    agent any
+    stages {
+        stage('Example Usage') {
+            steps {
+                echo "other_param is: ${params.other_param}"
+                echo "dynamic_choice selected: ${params.dynamic_choice}"
+                // Add steps here to perform actions based on the selected DYNAMIC_CHOICE
+            }
+        }
+    }
+}

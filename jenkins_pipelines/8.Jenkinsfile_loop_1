@@ -1,0 +1,15 @@
+pipeline {
+    agent any
+    stages {
+        stage('Loop Example') {
+            steps {
+                script {
+                    def items = ['item1', 'item2', 'item3']
+                    for (item in items) {
+                        echo "Processing ${item}"
+                    }
+                }
+            }
+        }
+    }
+}

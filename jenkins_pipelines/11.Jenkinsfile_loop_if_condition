@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+    parameters {
+        // This is a placeholder. The actual parameter is defined in the Jenkins UI as described in Step 1
+        string(name: 'languages', defaultValue: 'Option 1', description: 'Select Language Option')
+    }
+    stages {
+        stage('Process Selection') {
+            steps {
+                script {
+                    // Define the options to loop through
+                    // In a real scenario, these might come from another source or logic
+                    def options = ['Option 1', 'Option 2', 'Option 3']
+                    
+                    // Loop through each option
+                    for (def option : options) {
+                        // Check if the current option matches the selected parameter value
+                        if (option == params.languages) {
+                            echo "You have selected ${option}"
+                            // Perform specific actions for the matched option
+                            // Add your conditional logic here
+                            
+                            // Break the loop if necessary. Use 'return' to exit the script block early
+                            break
+                        }
+                        else{
+                            echo "You have entered wrong option"
+                            break
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

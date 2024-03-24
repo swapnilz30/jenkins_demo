@@ -1,0 +1,20 @@
+// Use Active Choices Parameter option, select groovy script and \
+// add groovy code: return ['item1', 'item2', 'item3']
+pipeline {
+    agent any
+    stages {
+        stage('Loop Example') {
+            steps {
+                script {
+                    def items = ['item1', 'item2', 'item3']
+                    for (item in items) {
+                        if(params.languages == item){
+                            echo "You have selected ${item}"
+                            break
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
