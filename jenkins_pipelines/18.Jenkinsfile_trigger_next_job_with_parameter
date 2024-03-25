@@ -1,0 +1,28 @@
+pipeline {
+    agent any // Defines that this pipeline can run on any available agent
+
+    stages {
+        stage('Example Stage') {
+            steps {
+                echo 'This is an example stage.' // A simple step for demonstration purposes
+            }
+        }
+    }
+
+    post {
+        success { // This block executes after the pipeline stages only if the pipeline succeeds
+            script {
+                // Trigger another job and pass it a parameter
+                // job name: 13.Jenkinsfile_loop_tokenize
+                build job: '13.Jenkinsfile_loop_tokenize',
+                      // String parameter "ITEMS" in 13.Jenkinsfile_loop_tokenize job
+                      // Pass parameter from current job to 13.Jenkinsfile_loop_tokenize job
+                      parameters: [string(name: 'ITEMS', value: 'value1')],
+                      wait: true // This pipeline does not wait for the triggered job to complete
+            }
+        }
+        failure { // This block executes if the pipeline fails
+            echo 'The pipeline failed.'
+        }
+    }
+}

@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Example Stage') {
+            steps {
+                echo 'This is an example stage.'
+            }
+        }
+    }
+
+    post {
+        success {
+            script {
+                // Define a map to hold your parallel tasks
+                def parallelTasks = [:]
+             
+                // Task 1 - Trigger job 1 (Example)
+                // Repeat the pattern for as many jobs as you need to trigger
+                parallelTasks['Trigger Job 1'] = {
+                    build job: '1.Jenkinsfile_env_var',
+                          wait: true
+                }
+                // Task 2 - Trigger job 2
+                parallelTasks['Trigger Job 2'] = {
+                    build job: '2.jenkinsfile_paramter',
+                          parameters: [string(name: 'TOOL', value: 'Python')],
+                          wait: true
+                }
+                // Task 3 - Trigger job 3
+                parallelTasks['Trigger Job 3'] = {
+                    build job: '13.Jenkinsfile_loop_tokenize',
+                          parameters: [string(name: 'ITEMS', value: 'value1')],
+                          wait: true
+                }
+
+                // Execute the tasks in parallel
+                parallel parallelTasks
+            }
+        }
+    }
+}
