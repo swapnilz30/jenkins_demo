@@ -1,0 +1,45 @@
+/*
+Please check the following steps for the ssh connection
+1. Go to Jenkins Dashboard > Manage Jenkins > Manage Credentials.
+2 .Choose the domain where you want to add the credentials (usually "global") and click Add Credentials.
+3. Select Username with password as the type.
+4. Enter your GitLab username and password or token. For GitLab, using a personal access token is recommended.
+5. Assign an ID to your credentials (e.g., gitlab-creds) and save them.
+
+*/
+pipeline {
+    agent {label 'master'}
+
+    environment {
+        GIT_SSH_KEY_ID = 'git-ssh-key'
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                // deleteDir(): depends on condition where to use.
+                deleteDir()
+                script {
+                    // Using the SSH method to clone
+                    sshagent([env.GIT_SSH_KEY_ID]) {
+                        sh 'git clone git@gitlab.fulcrumdigital.com:jenkins/jenkins-groovy-script.git'
+                    }
+                }
+            }
+        }
+    }
+    post {
+        always {
+            echo 'Cleaning up workspace'
+            deleteDir() // Deletes the workspace
+        }
+        success {
+            echo 'Build succeeded!'
+            // Steps to perform on success
+        }
+        failure {
+            echo 'Build failed.'
+            // Steps to perform on failure
+        }
+    }
+}
