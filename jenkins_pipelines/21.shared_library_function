@@ -1,0 +1,54 @@
+/*
+Step 1: Create the Shared Library Repository
+First, create a new Git repository to store your shared library. This can be on any Git hosting service you use (e.g., GitHub, GitLab, Bitbucket).
+
+In this repository, create the following structure:
+
+python
+Copy code
+(vars)
+  └── echoMessage.groovy
+Step 2: Writing Your Shared Library Code
+Create a file named echoMessage.groovy inside the vars directory. This directory is used for global variables or library methods that can be called directly from Jenkins pipelines.
+
+Inside echoMessage.groovy, write the following Groovy script:
+
+groovy
+Copy code
+// vars/echoMessage.groovy
+
+// This defines a global function named 'echoMessage'
+def call(String message) {
+    // Echoes a message to the Jenkins console
+    echo "Shared Library Message: ${message}"
+}
+Step 3: Configure Shared Library in Jenkins
+Before you can use the shared library in your Jenkins pipelines, you need to configure it in Jenkins:
+
+Go to Manage Jenkins > Configure System.
+Scroll down to Global Pipeline Libraries.
+Click Add.
+Fill in the form:
+Name: my-shared-library (You will use this name to reference the library in your Jenkinsfiles.)
+Default version: Specify a branch of your Git repository, like main or master.
+In the Retrieval method section, select Modern SCM.
+Select the type of your repository (e.g., Git) and fill in the repository URL.
+Save your configuration.
+Step 4: Using Your Shared Library in a Jenkinsfile
+Now, in any Jenkinsfile, you can use the echoMessage function you defined in your shared library:
+*/
+@Library('my-shared-library') _
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Use Shared Library') {
+            steps {
+                // Call the function from the shared library
+                echoMessage 'Hello from the Shared Library!'
+            }
+        }
+    }
+}
+//This example shows how to call the echoMessage function, passing a string that will be echoed to the build console.
